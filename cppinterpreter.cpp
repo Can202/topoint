@@ -2,12 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <string>
+#include <cstring>
 using namespace std;
 int transform_code_to_cpp(string program_location, string output);
 void write_text(string dir, string text);
 string get_text_from_file(string dir);
 vector<string> split(const string &s, char delim);
+bool check_if_string_is_in_string(string s1, string s2);
 
 
 vector<string> normal_includes = {	"#include <iostream>",
@@ -52,6 +53,18 @@ int transform_code_to_cpp(string program_location, string output){
 		thecode.push_back(normal_includes.at(i));
 	}
 	
+	// functions
+	size = textsplit.size();
+	for (int i = 0; i < size; i++){
+		if (check_if_string_is_in_string(textsplit.at(i),"func ")){
+			if (check_if_string_is_in_string(textsplit.at(i),"func start")){
+			} else{
+				thecode.push_back("void");
+			}
+		}
+	}
+	
+	// print
 	size = thecode.size();
 	for (int i = 0; i < size; i++){
 		cout << thecode.at(i) << endl;
@@ -59,6 +72,15 @@ int transform_code_to_cpp(string program_location, string output){
 	
 	return 0;
 	
+}
+
+bool check_if_string_is_in_string(string s1, string s2){
+	if(strstr(s1.c_str(),s2.c_str()))
+	{
+	   return true;
+	} else{
+		return false;
+	}
 }
 
 string get_text_from_file(string dir){
