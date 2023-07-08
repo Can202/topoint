@@ -112,6 +112,8 @@ int transform_code_to_cpp(string program_location, string output){
 	}
 	if (compile){
 		write_text("text.cpp",thecodeinonestring);
+		system("g++ text.cpp");
+		system("rm text.cpp");
 	}
 	
 	return 0;
