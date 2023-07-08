@@ -10,6 +10,6 @@ func start () do
 		print (num1, " is pair")
 	else do
 		print (num1, " is not pair")
-	end
+	exit
 	
-end
+exit

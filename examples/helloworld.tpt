@@ -1,4 +1,4 @@
 func start () do
 	print()
 	print("Hola Mundo.")
-end
+exit

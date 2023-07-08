@@ -5,6 +5,6 @@ func start() do
 	
 	put i in tail la_compra do
 		print(i)
-	end
+	exit
 	
-end
+exit

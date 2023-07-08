@@ -3,16 +3,16 @@
  */
 
 while true do
-end
+exit
 
 for i = 0, i<5, i++ do
-end
+exit
 
 put i in tail [3,2,1] do
-end
+exit
 
 put i in tail 5 do
-end
+exit
 
 put i in tail from 2 to 5 do
-end
+exit
