@@ -19,7 +19,9 @@ bool str_starts_with(string full_string, string prefix);
 vector<string> removeidentation (vector<string> textsplit);
 vector<string> remove_after (vector<string> textsplit, string after);
 vector<string> withoutstrings (vector<string> textsplit);
-void ChangeString(std::string& test);
+string ChangeString(string test, char i1, char i2);
+string transform_line_to_cpp(string line);
+string get_inside_str(string test, char i1, char i2);
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -32,8 +34,8 @@ vector<string> custom_functions;
 vector<string> custom_functions_type;
 vector<string> custom_functions_arg;
 vector<int> custom_functions_position;
-
 vector<string> variable_types = {"int", "float", "number", "string", "bool"};
+int actual_identation = 0;
 
 int main (int argc, char* argv[]){
 	
@@ -59,9 +61,11 @@ int transform_code_to_cpp(string program_location, string output){
 	textsplit = removeidentation (textsplit);
 	textsplit = remove_after (textsplit, "//");
 	
+	vector<string> textsplitwostr = withoutstrings(textsplit);
+	
 	int size = textsplit.size();
 	for (int i = 0; i<size; i++){
-		cout << textsplit.at(i) << endl;
+		cout << textsplitwostr.at(i) << endl;
 	}
 	
 	
@@ -74,7 +78,7 @@ int transform_code_to_cpp(string program_location, string output){
 	}
 	
 	// functions
-	get_fuctions(textsplit);
+	get_fuctions(textsplitwostr);
 	size = custom_functions.size();
 	for (int i = 0; i < size; i++){
 		string functext = custom_functions_type.at(i) + " " + custom_functions.at(i) + custom_functions_arg.at(i) + ";";
@@ -83,14 +87,14 @@ int transform_code_to_cpp(string program_location, string output){
 	
 	// add main function
 	thecode.push_back("int main(){");
-	read_function(textsplit, "start");
+	read_function(textsplitwostr, "start");
 	
-	int start_end = when_function_ends(textsplit, func_start_position);
-	for (int i = func_start_position; i<=start_end ; i++){
-		thecode.push_back(ident(1) + textsplit.at(i));
+	int start_end = when_function_ends(textsplitwostr, func_start_position);
+	actual_identation++;
+	for (int i = func_start_position + 1; i<=start_end ; i++){
+		string line = transform_line_to_cpp(textsplit.at(i));
+		thecode.push_back(line);
 	}
-	
-	thecode.push_back(ident(1) + "cosas");
 	thecode.push_back("}");
 	
 	
@@ -242,35 +246,100 @@ vector<string> remove_after (vector<string> textsplit, string after){
 vector<string> removeidentation (vector<string> textsplit){
 	int size = textsplit.size();
 	for (int i = 0; i<size; i++){
-		while (str_starts_with(textsplit.at(i), ident(1) ) ){
-			textsplit.at(i) = rm_prefix(textsplit.at(i), ident(1));
+		while (str_starts_with(textsplit.at(i), ident(1) ) || str_starts_with(textsplit.at(i), " " ) ){
+			if ( str_starts_with(textsplit.at(i), ident(1) ) ){
+				textsplit.at(i) = rm_prefix(textsplit.at(i), ident(1));
+			} else if (str_starts_with(textsplit.at(i), " " ) ) {
+				textsplit.at(i) = rm_prefix(textsplit.at(i), " ");
+			}
 		}
 	}
 	return textsplit;
 }
 
 vector<string> withoutstrings (vector<string> textsplit){
-	
+	int size = textsplit.size();
+	for (int i = 0; i<size; i++){
+		textsplit.at(i) = ChangeString(textsplit.at(i), '"', '"');
+	}
 	return textsplit;
 }
 
-void ChangeString(std::string& test)
-{
+string ChangeString(string test, char i1, char i2){
     bool inbracket = false;
-    std::string outStr;
+    string outStr;
     for (size_t i = 0; i < test.size(); ++i)
     { 
         char ch = test[i];
-        if (ch == '[') 
+        if (ch == i1 && inbracket == false) 
            inbracket = true;
         else
-        if ( ch == ']')
+        if ( ch == i2 && inbracket == true)
            inbracket = false;
         else
         if ( !inbracket )
            outStr += ch;
      }
      test = outStr;
+     return test;
+}
+string get_inside_str(string test, char i1, char i2){
+    bool inbracket = true;
+    string outStr;
+    for (size_t i = 0; i < test.size(); ++i)
+    { 
+        char ch = test[i];
+        if (ch == i1 && inbracket == true) 
+           inbracket = false;
+        else
+        if ( ch == i2 && inbracket == false)
+           inbracket = true;
+        else
+        if ( !inbracket )
+           outStr += ch;
+     }
+     test = outStr;
+     return test;
 }
 
-
+string transform_line_to_cpp(string original_line){
+	//string original_line_noid = withoutstrings(original_line);
+	string new_line;
+	bool used = false;
+	
+	string line = ident(actual_identation);
+	int size = variable_types.size();
+	for (int i = 0; i < size; i++){
+		if (str_starts_with(original_line, variable_types.at(i) ) ){
+			new_line = original_line + ";";
+			used = true;
+		}
+	}
+	
+	if (str_starts_with(original_line, "print")){
+		string in_str = get_inside_str(original_line, '(', ')');
+		vector<string> in_str_split = split(in_str, ',');
+		string the_end = "\\n";
+		string stt = "";
+		new_line = "cout";
+		for (size_t i = 0; i < in_str_split.size(); i++){
+			cout << in_str_split.at(i) << endl;
+			if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "end") ){
+				the_end = get_inside_str( in_str_split.at(i), '"', '"');
+			} else {
+				stt = in_str_split.at(i);
+				new_line = new_line + " << " + stt;
+			}
+		}
+		new_line = new_line + " << " + the_end + ";";
+		used = true;
+	}
+	
+	
+	if (used == false){
+		new_line = original_line;
+	}
+	
+	line = line + new_line;
+	return line;
+}
