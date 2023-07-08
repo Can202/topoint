@@ -17,6 +17,7 @@ string rm_prefix(string full_string, string prefix);
 string rm_suffix(string full_string, string suffix);
 bool str_starts_with(string full_string, string prefix);
 vector<string> removeidentation (vector<string> textsplit);
+vector<string> remove_after (vector<string> textsplit, string after);
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -54,10 +55,10 @@ int transform_code_to_cpp(string program_location, string output){
 	vector<string> textsplit = split(text, '\n');
 	
 	textsplit = removeidentation (textsplit);
+	textsplit = remove_after (textsplit, "//");
 	
 	int size = textsplit.size();
-	
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i<size; i++){
 		cout << textsplit.at(i) << endl;
 	}
 	
@@ -225,7 +226,16 @@ bool str_starts_with(string full_string, string prefix){
 	} else {
 		return false;
 	}
-} 
+}
+
+vector<string> remove_after (vector<string> textsplit, string after){
+	int size = textsplit.size();
+	for (int i = 0; i<size; i++){
+		textsplit.at(i) = textsplit.at(i).substr(0, textsplit.at(i).find(after));
+	}
+	return textsplit;
+}
+
 
 vector<string> removeidentation (vector<string> textsplit){
 	int size = textsplit.size();
