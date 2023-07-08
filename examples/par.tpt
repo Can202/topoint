@@ -1,0 +1,15 @@
+func start () do
+	
+	int num1
+	
+	print ("Give me a number: ", end="")
+	
+	ask (num1, int, if_not "that is not an integer number")
+	
+	if num1 % 2 is 0 do
+		print (num1, " is pair")
+	else do
+		print (num1, " is not pair")
+	end
+	
+end

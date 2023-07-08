@@ -1,0 +1,18 @@
+/*
+ * 
+ */
+
+while true do
+end
+
+for i = 0, i<5, i++ do
+end
+
+put i in tail [3,2,1] do
+end
+
+put i in tail 5 do
+end
+
+put i in tail from 2 to 5 do
+end

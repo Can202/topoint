@@ -1,0 +1,10 @@
+func start() do
+	list la_compra = ["Manzana", "Pera"]
+	
+	print( la_compra )
+	
+	put i in tail la_compra do
+		print(i)
+	end
+	
+end
