@@ -13,10 +13,23 @@ func start () do
 		print(num, " is 5")
 	else do
 		print (num, " is not 5")
-	end
+	exit
 	
-end
-
-func bla(){
+exit
+func(int) bla () do
 	pss
-}
+exit
+func(float) testing () do
+	pss
+exit
+func(number) blad () do
+	pss
+exit
+func(string) xd () do
+	pss
+exit
+func(bool) aja () do
+	pss
+exit
+
+
