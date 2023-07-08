@@ -1,0 +1,18 @@
+
+func start (){
+	number num // float number but int if it can
+	int num // int
+	float num // float
+	
+	print( "Hola Mundo" , end = "\n" )
+	print( "Dime un número: " , end = "\n" )
+	
+	ask(num, int, if_not = "no número entero" )
+	
+	if num is 5{
+		print(num, " is 5")
+	} else {
+		print (num, " is not 5")
+	}
+	
+}
