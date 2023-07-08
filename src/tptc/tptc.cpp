@@ -23,6 +23,8 @@ string ChangeString(string test, char i1, char i2);
 string transform_line_to_cpp(string line);
 string get_inside_str(string test, char i1, char i2);
 
+bool compile = true;
+
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
 									"#include <sstream>",
@@ -100,8 +102,16 @@ int transform_code_to_cpp(string program_location, string output){
 	
 	// print
 	size = thecode.size();
+	string thecodeinonestring;
 	for (int i = 0; i < size; i++){
-		cout << thecode.at(i) << endl;
+		if (compile){
+			thecodeinonestring = thecodeinonestring + thecode.at(i) + "\n";
+		} else {
+			cout << thecode.at(i) << endl;
+		}
+	}
+	if (compile){
+		write_text("text.cpp",thecodeinonestring);
 	}
 	
 	return 0;
@@ -319,9 +329,9 @@ string transform_line_to_cpp(string original_line){
 	if (str_starts_with(original_line, "print")){
 		string in_str = get_inside_str(original_line, '(', ')');
 		vector<string> in_str_split = split(in_str, ',');
-		string the_end = "\\n";
+		string the_end = "\"\\n\"";
 		string stt = "";
-		new_line = "cout";
+		new_line = "std::cout";
 		for (size_t i = 0; i < in_str_split.size(); i++){
 			cout << in_str_split.at(i) << endl;
 			if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "end") ){
