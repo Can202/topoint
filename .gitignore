@@ -1,2 +1,4 @@
-tptc
-a.out
+/src/tptc/tptc
+/src/tptc/examples/*
+/src/tptc/examples/
+/src/tptc/a.out
