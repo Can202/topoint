@@ -18,6 +18,8 @@ string rm_suffix(string full_string, string suffix);
 bool str_starts_with(string full_string, string prefix);
 vector<string> removeidentation (vector<string> textsplit);
 vector<string> remove_after (vector<string> textsplit, string after);
+vector<string> withoutstrings (vector<string> textsplit);
+void ChangeString(std::string& test);
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -246,3 +248,29 @@ vector<string> removeidentation (vector<string> textsplit){
 	}
 	return textsplit;
 }
+
+vector<string> withoutstrings (vector<string> textsplit){
+	
+	return textsplit;
+}
+
+void ChangeString(std::string& test)
+{
+    bool inbracket = false;
+    std::string outStr;
+    for (size_t i = 0; i < test.size(); ++i)
+    { 
+        char ch = test[i];
+        if (ch == '[') 
+           inbracket = true;
+        else
+        if ( ch == ']')
+           inbracket = false;
+        else
+        if ( !inbracket )
+           outStr += ch;
+     }
+     test = outStr;
+}
+
+
