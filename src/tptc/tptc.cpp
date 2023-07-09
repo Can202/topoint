@@ -337,13 +337,31 @@ string transform_line_to_cpp(string original_line){
 		for (size_t i = 0; i < in_str_split.size(); i++){
 			cout << in_str_split.at(i) << endl;
 			if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "end") ){
-				the_end = get_inside_str( in_str_split.at(i), '"', '"');
+				the_end = "\"" + get_inside_str( in_str_split.at(i), '"', '"') + "\"";
 			} else {
 				stt = in_str_split.at(i);
 				new_line = new_line + " << " + stt;
 			}
 		}
 		new_line = new_line + " << " + the_end + ";";
+		used = true;
+	}
+	if (str_starts_with(original_line, "ask")){
+		string in_str = get_inside_str(original_line, '(', ')');
+		vector<string> in_str_split = split(in_str, ',');
+		string the_end = "\"\\n\"";
+		string stt = "";
+		new_line = "std::cin";
+		for (size_t i = 0; i < in_str_split.size(); i++){
+			if (i==0){
+				new_line = new_line + " >> " + in_str_split.at(i) + ";";
+			} else if (i==1){
+				if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "if_not") ){
+					the_end = get_inside_str( in_str_split.at(i), '"', '"');
+					new_line = new_line + "\nif (!std::cin) {\nstd::cout << \"" + the_end + "\" << \"\\n\" ;\n}";
+				}
+			}
+		}
 		used = true;
 	}
 	

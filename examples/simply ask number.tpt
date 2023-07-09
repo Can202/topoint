@@ -1,0 +1,6 @@
+func start() do
+	int num
+	print ("Give me a number: ", end="")
+	ask(num, if_not "That's not an integer number")
+	print(num)
+exit

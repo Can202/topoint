@@ -4,7 +4,7 @@ func start () do
 	
 	print ("Give me a number: ", end="")
 	
-	ask (num1, int, if_not "that is not an integer number")
+	ask (num1, if_not "that is not an integer number")
 	
 	if num1 % 2 is 0 do
 		print (num1, " is pair")
