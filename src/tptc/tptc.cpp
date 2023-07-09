@@ -3,25 +3,20 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
+
+#include "string_functions.h"
+
 using namespace std;
+
 int transform_code_to_cpp(string program_location, string output);
 void write_text(string dir, string text);
 string get_text_from_file(string dir);
 vector<string> split(const string &s, char delim);
-bool str_in(string s1, string s2);
 void get_fuctions(vector<string> textsplit);
-string ident(int num);
 void read_function(vector<string> textsplit, string function_name);
 int when_function_ends(vector<string> textsplit, int function_position);
-string rm_prefix(string full_string, string prefix);
-string rm_suffix(string full_string, string suffix);
-bool str_starts_with(string full_string, string prefix);
-vector<string> removeidentation (vector<string> textsplit);
-vector<string> remove_after (vector<string> textsplit, string after);
-vector<string> withoutstrings (vector<string> textsplit);
-string ChangeString(string test, char i1, char i2);
 string transform_line_to_cpp(string line);
-string get_inside_str(string test, char i1, char i2);
+
 
 bool compile = true;
 
@@ -187,15 +182,6 @@ void get_fuctions(vector<string> textsplit){
 	
 }
 
-bool str_in(string s1, string s2){
-	if(strstr(s1.c_str(),s2.c_str()))
-	{
-	   return true;
-	} else{
-		return false;
-	}
-}
-
 string get_text_from_file(string dir){
 	std::ifstream ifs(dir);
 	std::string content( (std::istreambuf_iterator<char>(ifs) ),
@@ -220,99 +206,11 @@ vector<string> split(const std::string &s, char delim) {
   return elems;
 }
 
-string ident(int num){
-	string nident = "	";
-	string tident;
-	for (int i = 0; i< num; i++){
-		tident = tident + nident;
-	}
-	return tident;
-}
-
-string rm_prefix(string full_string, string prefix){
-	string result = full_string.substr(prefix.length());
-	return result;
-}
-string rm_suffix(string full_string, string suffix){
-	string result = full_string.substr(0, full_string.length() - suffix.length());
-	return result;
-}
-
-bool str_starts_with(string full_string, string prefix){
-	if (full_string.rfind(prefix, 0) == 0) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-vector<string> remove_after (vector<string> textsplit, string after){
-	int size = textsplit.size();
-	for (int i = 0; i<size; i++){
-		textsplit.at(i) = textsplit.at(i).substr(0, textsplit.at(i).find(after));
-	}
-	return textsplit;
-}
 
 
-vector<string> removeidentation (vector<string> textsplit){
-	int size = textsplit.size();
-	for (int i = 0; i<size; i++){
-		while (str_starts_with(textsplit.at(i), ident(1) ) || str_starts_with(textsplit.at(i), " " ) ){
-			if ( str_starts_with(textsplit.at(i), ident(1) ) ){
-				textsplit.at(i) = rm_prefix(textsplit.at(i), ident(1));
-			} else if (str_starts_with(textsplit.at(i), " " ) ) {
-				textsplit.at(i) = rm_prefix(textsplit.at(i), " ");
-			}
-		}
-	}
-	return textsplit;
-}
 
-vector<string> withoutstrings (vector<string> textsplit){
-	int size = textsplit.size();
-	for (int i = 0; i<size; i++){
-		textsplit.at(i) = ChangeString(textsplit.at(i), '"', '"');
-	}
-	return textsplit;
-}
 
-string ChangeString(string test, char i1, char i2){
-    bool inbracket = false;
-    string outStr;
-    for (size_t i = 0; i < test.size(); ++i)
-    { 
-        char ch = test[i];
-        if (ch == i1 && inbracket == false) 
-           inbracket = true;
-        else
-        if ( ch == i2 && inbracket == true)
-           inbracket = false;
-        else
-        if ( !inbracket )
-           outStr += ch;
-     }
-     test = outStr;
-     return test;
-}
-string get_inside_str(string test, char i1, char i2){
-    bool inbracket = true;
-    string outStr;
-    for (size_t i = 0; i < test.size(); ++i)
-    { 
-        char ch = test[i];
-        if (ch == i1 && inbracket == true) 
-           inbracket = false;
-        else
-        if ( ch == i2 && inbracket == false)
-           inbracket = true;
-        else
-        if ( !inbracket )
-           outStr += ch;
-     }
-     test = outStr;
-     return test;
-}
+
 
 string transform_line_to_cpp(string original_line){
 	//string original_line_noid = withoutstrings(original_line);
