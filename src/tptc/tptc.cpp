@@ -358,7 +358,10 @@ string transform_line_to_cpp(string original_line){
 			} else if (i==1){
 				if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "if_not") ){
 					the_end = get_inside_str( in_str_split.at(i), '"', '"');
-					new_line = new_line + "\nif (!std::cin) {\nstd::cout << \"" + the_end + "\" << \"\\n\" ;\n}";
+					// while (true){if(!cin){cout << "Bad value!";cin.clear();cin.ignore();cin >> a;} else{break;}}
+					new_line = 	new_line + "while (true){if(!std::cin){std::cout << \"" +
+								the_end + "\";std::cin.clear();std::cin.ignore();std::cin >> " +
+								in_str_split.at(0) + ";} else{break;}}";
 				}
 			}
 		}

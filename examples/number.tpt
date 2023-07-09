@@ -1,0 +1,10 @@
+func start() do
+	int numero
+	
+	print("Dime un número: ", end="")
+	
+	ask (numero, if_not "Eso no es un número entero.\nDime otro: ")
+	
+	print("El número es ", numero)
+	
+exit
