@@ -19,13 +19,14 @@ string transform_line_to_cpp(string line);
 int get_actual_identation (vector<string> textsplit, int position);
 
 
-bool compile = false;
+bool compile = true;
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
 									"#include <sstream>",
 									"#include <vector>",
-									"#include <string>"
+									"#include <string>",
+									"using namespace std;"
 									};
 int func_start_position = 0;
 vector<string> custom_functions;
@@ -88,7 +89,7 @@ int transform_code_to_cpp(string program_location, string output){
 	read_function(textsplitwostr, "start");
 	
 	int start_end = when_function_ends(textsplitwostr, func_start_position);
-	for (int i = func_start_position + 1; i<=start_end ; i++){
+	for (int i = func_start_position + 1; i<=start_end -1 ; i++){
 		actual_identation = get_actual_identation(textsplit, i);
 		string line = transform_line_to_cpp(textsplit.at(i));
 		thecode.push_back(line);
@@ -243,7 +244,7 @@ vector<string> split(const std::string &s, char delim) {
 
 
 string transform_line_to_cpp(string original_line){
-	//string original_line_noid = withoutstrings(original_line);
+	string original_line_noid = ChangeString(original_line, '"', '"');
 	string new_line;
 	bool used = false;
 	
@@ -292,6 +293,58 @@ string transform_line_to_cpp(string original_line){
 								in_str_split.at(0) + ";} else{break;}}";
 				}
 			}
+		}
+		used = true;
+	}
+	if (str_starts_with(original_line, "if")){
+		vector<string> the_split = split(original_line_noid, ' ');
+		int the_split_size = the_split.size();
+		new_line = "";
+		for (int i=0; i<the_split_size; i++){
+			if (str_in(the_split.at(i), "if")){
+				new_line += "if (";
+			}
+			else if (str_in(the_split.at(i), "is")){
+				new_line += "==";
+			}
+			else if (str_in(the_split.at(i), "do")){
+				new_line += "){";
+			}
+			else{
+				new_line += the_split.at(i);
+			}
+			
+		}
+		used = true;
+	}
+	if (str_starts_with(original_line, "exit")){
+		new_line = "}";
+		used = true;
+	}
+	if (str_starts_with(original_line, "else")){
+		bool was_if = false;
+		vector<string> the_split = split(original_line_noid, ' ');
+		int the_split_size = the_split.size();
+		new_line = "";
+		for (int i=0; i<the_split_size; i++){
+			if (str_in(the_split.at(i), "if")){
+				new_line += "if (";
+				was_if = true;
+			}
+			else if (str_in(the_split.at(i), "is")){
+				new_line += "==";
+			}
+			else if (str_in(the_split.at(i), "do")){
+				if (was_if){
+					new_line += "){";
+				} else{
+					new_line += "{";
+				}
+			}
+			else{
+				new_line += the_split.at(i);
+			}
+			
 		}
 		used = true;
 	}
