@@ -1,4 +1,4 @@
-#Tupoint syntax
+# Tupoint syntax
 
 To integrate a library: "import" .
 
@@ -16,12 +16,14 @@ Numerical value: "num", num is supposed to act both as an integer and a floating
 
 List: a set of values.
 
-Tail: the equivalent of the "for" loop
+Loops representation:
+-tail: the equivalent of the "for" loop
 (the c++ for will also be functional if it`s on an algorithm).
 Tail works with the integration of a "put" function, which will establish the tail loop.
 
-While: the common while loop, no more differences.
+-while: the common while loop, no more differences.
 
+Operations:
 The Operation "%" (to calculate a remainder) will be accepted on the algorithm,
 as well as an equivalent called "rem".
 
