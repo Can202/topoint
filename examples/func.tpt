@@ -2,7 +2,7 @@
 func start () do
 	//number num // float number but int if it can
 	int num // int
-	float num // float
+	//float num // float
 	
 	print( "Hola Mundo" , end = "\n" )
 	print( "Dime un número: " , end = "\n" )

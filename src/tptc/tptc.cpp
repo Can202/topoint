@@ -341,6 +341,9 @@ string transform_line_to_cpp(string original_line){
 					new_line += "{";
 				}
 			}
+			else if (str_in(the_split.at(i), "else")){
+				new_line += "} else";
+			}
 			else{
 				new_line += the_split.at(i);
 			}
