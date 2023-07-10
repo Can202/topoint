@@ -16,9 +16,10 @@ void get_fuctions(vector<string> textsplit);
 void read_function(vector<string> textsplit, string function_name);
 int when_function_ends(vector<string> textsplit, int function_position);
 string transform_line_to_cpp(string line);
+int get_actual_identation (vector<string> textsplit, int position);
 
 
-bool compile = true;
+bool compile = false;
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -87,8 +88,8 @@ int transform_code_to_cpp(string program_location, string output){
 	read_function(textsplitwostr, "start");
 	
 	int start_end = when_function_ends(textsplitwostr, func_start_position);
-	actual_identation++;
 	for (int i = func_start_position + 1; i<=start_end ; i++){
+		actual_identation = get_actual_identation(textsplit, i);
 		string line = transform_line_to_cpp(textsplit.at(i));
 		thecode.push_back(line);
 	}
@@ -113,6 +114,35 @@ int transform_code_to_cpp(string program_location, string output){
 	
 	return 0;
 }
+
+int get_actual_identation (vector<string> textsplit, int position){
+	int disparity = 0;
+	int size = textsplit.size();
+	int more_next = 0;
+	for (int i = 0; i < size; i++){
+		if (more_next == 1){
+			disparity++;
+			more_next = 0;
+		}
+		
+		if (str_in(textsplit.at(i), " do")){
+			more_next = 1;
+		}
+		if (str_in(textsplit.at(i), "exit")){
+			more_next = 1;
+			disparity--;
+		}
+		if (str_in(textsplit.at(i), "else")){
+			more_next = 1;
+			disparity--;
+		}
+		if (i >= position){
+			break;
+		}
+	}
+	return disparity;
+}
+
 int when_function_ends(vector<string> textsplit, int function_position){
 	int size = textsplit.size();
 	int disparity = 0;
