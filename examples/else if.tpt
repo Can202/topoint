@@ -1,0 +1,22 @@
+
+func start () do
+	//number num // float number but int if it can
+	int num // int
+	//float num // float
+	
+	print( "Hola Mundo" , end = "\n" )
+	print( "Dime un número: " , end = "\n" )
+	
+	ask(num, int, if_not = "no número entero" )
+	
+	if num is 5 do
+		print(num, " is 5")
+	else if num is 3 do
+		print (num, " is 3")
+	else do
+		print (num, " is not 3 nor 5")
+	exit
+	
+exit
+
+

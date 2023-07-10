@@ -328,7 +328,7 @@ string transform_line_to_cpp(string original_line){
 		new_line = "";
 		for (int i=0; i<the_split_size; i++){
 			if (str_in(the_split.at(i), "if")){
-				new_line += "if (";
+				new_line += " if (";
 				was_if = true;
 			}
 			else if (str_in(the_split.at(i), "is")){
