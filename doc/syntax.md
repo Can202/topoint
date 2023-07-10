@@ -28,6 +28,3 @@ The Operation "%" (to calculate a remainder) will be accepted on the algorithm,
 as well as an equivalent called "rem".
 
 
-Notes:
--if you write a circumstance such as "func (exits)", the compiler will confuse the variable "exits" with "exit".
-
