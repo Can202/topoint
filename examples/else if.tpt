@@ -1,4 +1,3 @@
-
 func start () do
 	//number num // float number but int if it can
 	int num // int
@@ -16,7 +15,6 @@ func start () do
 	else do
 		print (num, " is not 3 nor 5")
 	exit
-	
 exit
 
 

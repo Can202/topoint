@@ -19,7 +19,7 @@ string transform_line_to_cpp(string line);
 int get_actual_identation (vector<string> textsplit, int position);
 
 
-bool compile = true;
+bool compile = false;
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -88,7 +88,7 @@ int transform_code_to_cpp(string program_location, string output){
 	thecode.push_back("int main(){");
 	read_function(textsplitwostr, "start");
 	
-	int start_end = when_function_ends(textsplitwostr, func_start_position);
+	int start_end = when_function_ends(textsplitwostr, func_start_position) - func_start_position;
 	for (int i = func_start_position + 1; i<=start_end; i++){
 		actual_identation = get_actual_identation(textsplit, i);
 		string line = transform_line_to_cpp(textsplit.at(i));
@@ -130,7 +130,7 @@ int get_actual_identation (vector<string> textsplit, int position){
 			more_next = 1;
 		}
 		if (keyword_in(textsplit.at(i), "exit")){
-			more_next = 1;
+			//more_next = 1;
 			disparity--;
 		}
 		if (keyword_in(textsplit.at(i), "else")){
@@ -149,17 +149,26 @@ int when_function_ends(vector<string> textsplit, int function_position){
 	int disparity = 0;
 	int end_position = 0;
 	bool changed = false;
+	int more_next = 0;
 	for (int i = function_position; i < size; i++){
-		if (keyword_in(textsplit.at(i), "do")){
+		if (more_next == 1){
 			changed = true;
 			disparity++;
+			more_next = 0;
+		}
+		if (keyword_in(textsplit.at(i), "do")){
+			more_next = 1;
 		}
 		if (keyword_in(textsplit.at(i), "exit")){
 			changed = true;
+			cout << "aa"<< i << endl;
+			cout << disparity << endl;
 			disparity--;
+			cout << disparity << endl;
 		}
 		if (keyword_in(textsplit.at(i), "else")){
 			changed = true;
+			more_next = 1;
 			disparity--;
 		}
 		if (disparity == 0 && changed == true){
@@ -321,6 +330,8 @@ string transform_line_to_cpp(string original_line){
 		used = true;
 	}
 	if (str_starts_with(original_line, "exit")){
+		cout << original_line;
+		cout << "worked" << actual_identation << endl;
 		new_line = "}";
 		used = true;
 	}

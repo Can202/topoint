@@ -2,3 +2,4 @@ func start () do
 	print()
 	print("Hello world")
 exit
+
