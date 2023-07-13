@@ -122,7 +122,7 @@ bool str_in(string s1, string s2){
  */
 bool keyword_in(string line, string keyword){
     string line_wos = ChangeString(line, '"', '"');
-    vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]"};
+    vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]", "="};
     string new_keyword = "";
     
     
