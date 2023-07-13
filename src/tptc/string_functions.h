@@ -119,13 +119,14 @@ bool str_in(string s1, string s2){
  * to detect if the keyword was written on the line.
  */
 bool keyword_in(string line, string keyword){
+	string line_wos = ChangeString(line, "\"", "\"");
 	vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]";
 	for (size_t i; i<spaces.size(); i++){
-		if (str_starts_with(line, keyword + i)){
+		if (str_starts_with(line_wos, keyword + i)){
 			return true;
 		} else {
 			for (size_t j; j<spaces.size(); j++){
-				if (str_in(line, i + keyword + j)){
+				if (str_in(line_wos, i + keyword + j)){
 					return true;
 				}
 			}
