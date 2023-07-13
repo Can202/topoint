@@ -19,7 +19,7 @@ string transform_line_to_cpp(string line);
 int get_actual_identation (vector<string> textsplit, int position);
 
 
-bool compile = true;
+bool compile = false;
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
@@ -126,7 +126,7 @@ int get_actual_identation (vector<string> textsplit, int position){
 			more_next = 0;
 		}
 		
-		if (keyword_in(textsplit.at(i), " do")){
+		if (keyword_in(textsplit.at(i), "do")){
 			more_next = 1;
 		}
 		if (keyword_in(textsplit.at(i), "exit")){
@@ -150,7 +150,7 @@ int when_function_ends(vector<string> textsplit, int function_position){
 	int end_position = 0;
 	bool changed = false;
 	for (int i = function_position; i < size; i++){
-		if (keyword_in(textsplit.at(i), " do")){
+		if (keyword_in(textsplit.at(i), "do")){
 			changed = true;
 			disparity++;
 		}
@@ -187,7 +187,7 @@ void read_function(vector<string> textsplit, string function_name){
 void get_fuctions(vector<string> textsplit){
 	int size = textsplit.size();
 	for (int i = 0; i < size; i++){
-		if (keyword_in(textsplit.at(i),"func ")){
+		if (keyword_in(textsplit.at(i),"func")){
 			if (keyword_in(textsplit.at(i),"func start")){
 				//thecode.push_back("int main(){");
 				func_start_position = i;
@@ -195,7 +195,7 @@ void get_fuctions(vector<string> textsplit){
 				//thecode.push_back("void");
 			}
 		} else {
-			if (keyword_in(textsplit.at(i),"func(")){
+			if (keyword_in(textsplit.at(i),"func")){
 				int variable_types_size = variable_types.size();
 				for (int j = 0; j<variable_types_size; j++){
 					if (keyword_in(textsplit.at(i),"func(" + variable_types.at(j) + ")")){

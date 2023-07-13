@@ -18,6 +18,8 @@ string rm_prefix(string full_string, string prefix);
 string rm_suffix(string full_string, string suffix);
 bool str_in(string s1, string s2);
 string ident(int num);
+bool keyword_in(string line, string keyword);
+bool str_ends_with(string full_string, string prefix);
 
 
 string ident(int num){
@@ -119,20 +121,36 @@ bool str_in(string s1, string s2){
  * to detect if the keyword was written on the line.
  */
 bool keyword_in(string line, string keyword){
-	string line_wos = ChangeString(line, "\"", "\"");
-	vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]";
-	for (size_t i; i<spaces.size(); i++){
-		if (str_starts_with(line_wos, keyword + i)){
-			return true;
-		} else {
-			for (size_t j; j<spaces.size(); j++){
-				if (str_in(line_wos, i + keyword + j)){
-					return true;
-				}
-			}
-		}
+    string line_wos = ChangeString(line, '"', '"');
+    vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]"};
+    string new_keyword = "";
+    
+    
+    int size = spaces.size();
+    
+    if (keyword == line){
+	return true;
+    }
+    
+    for (int i = 0; i<size; i++){
+	new_keyword = keyword + spaces.at(i);
+	if (str_starts_with(line_wos, new_keyword)){
+	    return true;
 	}
-	return false;
+	new_keyword = spaces.at(i) + keyword;
+	if (str_ends_with(line_wos, new_keyword)){
+	    return true;
+	}
+	
+	for (int j = 0; j<size; j++){
+	    new_keyword = spaces.at(i) + keyword + spaces.at(j);
+	    if (str_in(line_wos, new_keyword)){
+		return true;
+	    }
+	}
+	
+    }
+    return false;
 }
 
 bool str_starts_with(string full_string, string prefix){
@@ -143,4 +161,11 @@ bool str_starts_with(string full_string, string prefix){
 	}
 }
 
+bool str_ends_with (string full_string, string suffix) {
+    if (full_string.length() >= suffix.length()) {
+        return (0 == full_string.compare (full_string.length() - suffix.length(), suffix.length(), suffix));
+    } else {
+        return false;
+    }
+}
 #endif
