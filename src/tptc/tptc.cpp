@@ -126,14 +126,14 @@ int get_actual_identation (vector<string> textsplit, int position){
 			more_next = 0;
 		}
 		
-		if (str_in(textsplit.at(i), " do")){
+		if (keyword_in(textsplit.at(i), " do")){
 			more_next = 1;
 		}
-		if (str_in(textsplit.at(i), "exit")){
+		if (keyword_in(textsplit.at(i), "exit")){
 			more_next = 1;
 			disparity--;
 		}
-		if (str_in(textsplit.at(i), "else")){
+		if (keyword_in(textsplit.at(i), "else")){
 			more_next = 1;
 			disparity--;
 		}
@@ -150,15 +150,15 @@ int when_function_ends(vector<string> textsplit, int function_position){
 	int end_position = 0;
 	bool changed = false;
 	for (int i = function_position; i < size; i++){
-		if (str_in(textsplit.at(i), " do")){
+		if (keyword_in(textsplit.at(i), " do")){
 			changed = true;
 			disparity++;
 		}
-		if (str_in(textsplit.at(i), "exit")){
+		if (keyword_in(textsplit.at(i), "exit")){
 			changed = true;
 			disparity--;
 		}
-		if (str_in(textsplit.at(i), "else")){
+		if (keyword_in(textsplit.at(i), "else")){
 			changed = true;
 			disparity--;
 		}
@@ -187,18 +187,18 @@ void read_function(vector<string> textsplit, string function_name){
 void get_fuctions(vector<string> textsplit){
 	int size = textsplit.size();
 	for (int i = 0; i < size; i++){
-		if (str_in(textsplit.at(i),"func ")){
-			if (str_in(textsplit.at(i),"func start")){
+		if (keyword_in(textsplit.at(i),"func ")){
+			if (keyword_in(textsplit.at(i),"func start")){
 				//thecode.push_back("int main(){");
 				func_start_position = i;
 			} else {
 				//thecode.push_back("void");
 			}
 		} else {
-			if (str_in(textsplit.at(i),"func(")){
+			if (keyword_in(textsplit.at(i),"func(")){
 				int variable_types_size = variable_types.size();
 				for (int j = 0; j<variable_types_size; j++){
-					if (str_in(textsplit.at(i),"func(" + variable_types.at(j) + ")")){
+					if (keyword_in(textsplit.at(i),"func(" + variable_types.at(j) + ")")){
 						vector<string> thisline = split(textsplit.at(i), ' ');
 						custom_functions.push_back(thisline[1]);
 						custom_functions_type.push_back(variable_types.at(j));
@@ -265,7 +265,7 @@ string transform_line_to_cpp(string original_line){
 		new_line = "std::cout";
 		for (size_t i = 0; i < in_str_split.size(); i++){
 			cout << in_str_split.at(i) << endl;
-			if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "end") ){
+			if ( keyword_in(ChangeString(in_str_split.at(i), '"', '"'), "end") ){
 				the_end = "\"" + get_inside_str( in_str_split.at(i), '"', '"') + "\"";
 			} else {
 				stt = in_str_split.at(i);
@@ -285,7 +285,7 @@ string transform_line_to_cpp(string original_line){
 			if (i==0){
 				new_line = new_line + " >> " + in_str_split.at(i) + ";";
 			} else if (i==1){
-				if ( str_in(ChangeString(in_str_split.at(i), '"', '"'), "if_not") ){
+				if ( keyword_in(ChangeString(in_str_split.at(i), '"', '"'), "if_not") ){
 					the_end = get_inside_str( in_str_split.at(i), '"', '"');
 					// while (true){if(!cin){cout << "Bad value!";cin.clear();cin.ignore();cin >> a;} else{break;}}
 					new_line = 	new_line + "while (true){if(!std::cin){std::cout << \"" +
@@ -301,13 +301,13 @@ string transform_line_to_cpp(string original_line){
 		int the_split_size = the_split.size();
 		new_line = "";
 		for (int i=0; i<the_split_size; i++){
-			if (str_in(the_split.at(i), "if")){
+			if (keyword_in(the_split.at(i), "if")){
 				new_line += "if (";
 			}
-			else if (str_in(the_split.at(i), "is")){
+			else if (keyword_in(the_split.at(i), "is")){
 				new_line += "==";
 			}
-			else if (str_in(the_split.at(i), "do")){
+			else if (keyword_in(the_split.at(i), "do")){
 				new_line += "){";
 			}
 			else{
@@ -327,21 +327,21 @@ string transform_line_to_cpp(string original_line){
 		int the_split_size = the_split.size();
 		new_line = "";
 		for (int i=0; i<the_split_size; i++){
-			if (str_in(the_split.at(i), "if")){
+			if (keyword_in(the_split.at(i), "if")){
 				new_line += " if (";
 				was_if = true;
 			}
-			else if (str_in(the_split.at(i), "is")){
+			else if (keyword_in(the_split.at(i), "is")){
 				new_line += "==";
 			}
-			else if (str_in(the_split.at(i), "do")){
+			else if (keyword_in(the_split.at(i), "do")){
 				if (was_if){
 					new_line += "){";
 				} else{
 					new_line += "{";
 				}
 			}
-			else if (str_in(the_split.at(i), "else")){
+			else if (keyword_in(the_split.at(i), "else")){
 				new_line += "} else";
 			}
 			else{
