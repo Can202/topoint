@@ -115,6 +115,25 @@ bool str_in(string s1, string s2){
 	}
 }
 
+/* This function use the str_in and str_starts_with functions
+ * to detect if the keyword was written on the line.
+ */
+bool keyword_in(string line, string keyword){
+	vector<string> spaces = {" ", "\n", "	", "(", ")", "{", "}", "[", "]";
+	for (size_t i; i<spaces.size(); i++){
+		if (str_starts_with(line, keyword + i)){
+			return true;
+		} else {
+			for (size_t j; j<spaces.size(); j++){
+				if (str_in(line, i + keyword + j)){
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool str_starts_with(string full_string, string prefix){
 	if (full_string.rfind(prefix, 0) == 0) {
 		return true;
