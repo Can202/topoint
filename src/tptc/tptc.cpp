@@ -19,7 +19,7 @@ string transform_line_to_cpp(string line);
 int get_actual_identation (vector<string> textsplit, int position);
 
 
-bool compile = false;
+bool compile = true;
 
 vector<string> normal_includes = {	"#include <iostream>",
 									"#include <fstream>",
